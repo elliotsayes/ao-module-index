@@ -171,7 +171,7 @@ function ModuleTable() {
             More
           </Button>
         ) : (
-          <div>No more results</div>
+          <p>No more results</p>
         )
       }
     </div>
