@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { modulueGqlQuery } from "./lib/query";
+import { modulueGqlQuery as moduleGqlQuery } from "./lib/query";
 import { useMemo } from "react";
 import { ModuleData, parseModuleTransaction } from "./lib/parse";
 import {
@@ -87,7 +87,7 @@ function ModuleTable() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery(modulueGqlQuery(50));
+  } = useInfiniteQuery(moduleGqlQuery(50));
 
   const tableData = useMemo(() => {
     if (gqlData === undefined) {
