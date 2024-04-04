@@ -40,19 +40,19 @@ const columns = [
   columnHelper.accessor("bundleId", {
     header: "Bundle",
   }),
+  columnHelper.accessor("contentType", {
+    header: "Content Type",
+  }),
   columnHelper.accessor("dataProtocol", {
     header: "Data Protocol",
   }),
   columnHelper.accessor("type", {
     header: "Type",
   }),
-  columnHelper.accessor("contentType", {
-    header: "Content Type",
-  }),
   columnHelper.accessor("variant", {
     header: "Variant",
   }),
-  columnHelper.accessor("format", {
+  columnHelper.accessor("moduleFormat", {
     header: "Format",
   }),
   columnHelper.accessor("inputEncoding", {
@@ -66,7 +66,17 @@ const columns = [
   }),
   columnHelper.accessor("computeLimit", {
     header: "Compute Limit",
-  })
+  }),
+  columnHelper.accessor("extensions", {
+    header: "Extensions",
+    cell: (cell) => {
+      const extensions = cell.row.original.extensions;
+      if (extensions.length === 0) {
+        return "<none>";
+      }
+      return <p>{extensions.join(', ')}</p>
+    },
+  }),
 ]
 
 function ModuleTable() {
@@ -84,8 +94,13 @@ function ModuleTable() {
       return []
     }
     return gqlData.pages.map((page) => 
-      page.transactions.edges.map((item) => 
-        parseModuleTransaction(item.node))
+      page.transactions.edges.map((item) => {
+        try {
+          return parseModuleTransaction(item.node)
+        } catch (e) {
+          return null;
+        }
+      }).filter(Boolean) as ModuleData[]
     ).flat()
   }, [gqlData])
 
